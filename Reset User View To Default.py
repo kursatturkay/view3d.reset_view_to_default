@@ -13,7 +13,7 @@ def orbit_around_scene_center():
 
     context = bpy.context
 
-    # 3D Viewport'u bul
+    
     for area in context.screen.areas:
         if area.type == 'VIEW_3D':
             for space in area.spaces:
@@ -25,13 +25,13 @@ def orbit_around_scene_center():
         print("3D Viewport bulunamadı!")
         return
 
-    # Seçili nesne yoksa sahne merkezini pivot noktası olarak ayarla
+    
     if not context.selected_objects:
-        region_3d.view_location = Vector((0, 0, 0))  # Orijine ayarla
+        region_3d.view_location = Vector((0, 0, 0))  
         print("The pivot point is set to the scene center (origin). You can now orbit with the mouse.")
 
     else:
-        # Seçim varsa, pivot noktasını seçime göre ayarla (isteğe bağlı)
+        
 
         min_corner = Vector((float('inf'), float('inf'), float('inf')))
         max_corner = Vector((float('-inf'), float('-inf'), float('-inf')))
@@ -59,8 +59,8 @@ def orbit_around_scene_center():
 
 class VIEW3D_OT_ResetViewToDefault(bpy.types.Operator):
     """Resets the 3D Viewport camera view to default (perspective)."""
-    bl_idname = "view3d.reset_view_to_default"  # Technical ID
-    bl_label = "Set Camera View To Default"    # User-friendly name
+    bl_idname = "view3d.reset_view_to_default"  
+    bl_label = "Set Camera View To Default"    
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -82,7 +82,7 @@ class VIEW3D_OT_ResetViewToDefault(bpy.types.Operator):
                             view_rotation_deg = tuple(math.degrees(angle) for angle in region_3d.view_rotation)
                             
                             orbit_around_scene_center()
-                            #region_3d.view_location = (-0.7651, 0.3688, 1.7046)
+                            
                             region_3d.view_location = (0.0,0.0,0.0)
                             
                             degrees = (63.526817658912385, 7.1112716314312746e-06, 66.16962275446542)
@@ -101,7 +101,7 @@ class VIEW3D_OT_ResetViewToDefault(bpy.types.Operator):
                             camera.data.lens = 35
                             region_3d.view_camera_zoom = 1
 
-                            region_3d.view_perspective = 'PERSP'  # Force perspective
+                            region_3d.view_perspective = 'PERSP'  
                             
                             print(f"Viewport perspective mode: {region_3d.view_perspective}")
 
