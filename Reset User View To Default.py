@@ -1,7 +1,7 @@
 #https://youtube.com/playlist?list=PLNizloUxMUXLHNHn2-0Wmdf2YtygXcmop 
 #Reset User View To Default. Default Hotkey : Ctrl+Shift+Alt+Home. autorun=True
 #autorun=True
-#① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ This Operator is a part of CommandBox addon for Blender3d
+#This Operator is a part of CommandBox addon for Blender3d
 #bpy.ops.view3d.modal_draw_operator('INVOKE_DEFAULT', text=textinfo_, duration=5)
 
 
@@ -11,8 +11,8 @@ from mathutils import Euler
 
 class VIEW3D_OT_ResetViewToDefault(bpy.types.Operator):
     """Resets the 3D Viewport camera view to default (perspective)."""
-    bl_idname = "view3d.reset_view_to_default"  # Technical ID
-    bl_label = "Set Camera View To Default"    # User-friendly name
+    bl_idname = "view3d.reset_view_to_default"
+    bl_label = "Set Camera View To Default"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -51,7 +51,7 @@ class VIEW3D_OT_ResetViewToDefault(bpy.types.Operator):
                             camera.data.lens = 35
                             region_3d.view_camera_zoom = 1
 
-                            region_3d.view_perspective = 'PERSP'  # Force perspective
+                            region_3d.view_perspective = 'PERSP'
                             print(f"Viewport perspective mode: {region_3d.view_perspective}")
 
 
