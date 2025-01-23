@@ -1,7 +1,7 @@
 #https://youtube.com/playlist?list=PLNizloUxMUXLHNHn2-0Wmdf2YtygXcmop 
 #Reset User View To Default. Default Hotkey : Ctrl+Shift+Alt+Home. autorun=True
 #autorun=True
-#This Operator is a part of CommandBox addon for Blender3d
+#This Operator is a part of CommandBox addon for Blender3d. More of useful commands will welcome
 #bpy.ops.view3d.modal_draw_operator('INVOKE_DEFAULT', text=textinfo_, duration=5)
 
 
