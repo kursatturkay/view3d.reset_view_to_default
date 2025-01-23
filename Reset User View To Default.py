@@ -4,15 +4,63 @@
 #This Operator is a part of CommandBox addon for Blender3d. More of useful commands will welcome
 #bpy.ops.view3d.modal_draw_operator('INVOKE_DEFAULT', text=textinfo_, duration=5)
 
-
 import bpy
 import math
-from mathutils import Euler
+from mathutils import Euler,Vector
+
+def orbit_around_scene_center():
+    """Orbits the scene center when nothing is selected (by adjusting the pivot point)."""
+
+    context = bpy.context
+
+    # 3D Viewport'u bul
+    for area in context.screen.areas:
+        if area.type == 'VIEW_3D':
+            for space in area.spaces:
+                if space.type == 'VIEW_3D':
+                    region_3d = space.region_3d
+                    break
+            break
+    else:
+        print("3D Viewport bulunamadı!")
+        return
+
+    # Seçili nesne yoksa sahne merkezini pivot noktası olarak ayarla
+    if not context.selected_objects:
+        region_3d.view_location = Vector((0, 0, 0))  # Orijine ayarla
+        print("The pivot point is set to the scene center (origin). You can now orbit with the mouse.")
+
+    else:
+        # Seçim varsa, pivot noktasını seçime göre ayarla (isteğe bağlı)
+
+        min_corner = Vector((float('inf'), float('inf'), float('inf')))
+        max_corner = Vector((float('-inf'), float('-inf'), float('-inf')))
+
+        def update_bounding_box(point):
+            nonlocal min_corner, max_corner
+            min_corner = Vector(
+                (min(min_corner.x,
+                     point.x), min(min_corner.y,
+                                   point.y), min(min_corner.z, point.z)))
+            max_corner = Vector(
+                (max(max_corner.x,
+                     point.x), max(max_corner.y,
+                                   point.y), max(max_corner.z, point.z)))
+
+
+        for obj in context.selected_objects:
+            for corner in obj.bound_box:
+                world_corner = obj.matrix_world @ Vector(corner)
+                update_bounding_box(world_corner)
+
+        center = (min_corner + max_corner) / 2
+        region_3d.view_location = center
+
 
 class VIEW3D_OT_ResetViewToDefault(bpy.types.Operator):
     """Resets the 3D Viewport camera view to default (perspective)."""
-    bl_idname = "view3d.reset_view_to_default"
-    bl_label = "Set Camera View To Default"
+    bl_idname = "view3d.reset_view_to_default"  # Technical ID
+    bl_label = "Set Camera View To Default"    # User-friendly name
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
@@ -32,8 +80,10 @@ class VIEW3D_OT_ResetViewToDefault(bpy.types.Operator):
                         if area.spaces and hasattr(area.spaces[0], 'region_3d'):
                             region_3d = area.spaces[0].region_3d
                             view_rotation_deg = tuple(math.degrees(angle) for angle in region_3d.view_rotation)
-                            region_3d.view_location =  (0.0,0.0,0.0)
+                            
+                            orbit_around_scene_center()
                             #region_3d.view_location = (-0.7651, 0.3688, 1.7046)
+                            region_3d.view_location = (0.0,0.0,0.0)
                             
                             degrees = (63.526817658912385, 7.1112716314312746e-06, 66.16962275446542)
                             radians = tuple(math.radians(degree) for degree in degrees)
@@ -51,7 +101,8 @@ class VIEW3D_OT_ResetViewToDefault(bpy.types.Operator):
                             camera.data.lens = 35
                             region_3d.view_camera_zoom = 1
 
-                            region_3d.view_perspective = 'PERSP'
+                            region_3d.view_perspective = 'PERSP'  # Force perspective
+                            
                             print(f"Viewport perspective mode: {region_3d.view_perspective}")
 
 
