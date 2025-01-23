@@ -32,8 +32,8 @@ class VIEW3D_OT_ResetViewToDefault(bpy.types.Operator):
                         if area.spaces and hasattr(area.spaces[0], 'region_3d'):
                             region_3d = area.spaces[0].region_3d
                             view_rotation_deg = tuple(math.degrees(angle) for angle in region_3d.view_rotation)
-                            
-                            region_3d.view_location = (-0.7651, 0.3688, 1.7046)
+                            region_3d.view_location =  (0.0,0.0,0.0)
+                            #region_3d.view_location = (-0.7651, 0.3688, 1.7046)
                             
                             degrees = (63.526817658912385, 7.1112716314312746e-06, 66.16962275446542)
                             radians = tuple(math.radians(degree) for degree in degrees)
